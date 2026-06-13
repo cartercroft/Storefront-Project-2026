@@ -13,6 +13,7 @@ namespace Storefront.API.Extensions
 
         public static IServiceCollection AddAppServices(this IServiceCollection services)
         {
+            //TODO: Assembly Scan
             //var types = Assembly.GetExecutingAssembly().GetTypes()
             //    .Where(t => t.IsClass && !t.IsAbstract && t.Namespace == "Storefront.API.Services");
 
@@ -20,8 +21,10 @@ namespace Storefront.API.Extensions
             //{
             //    ServiceDescriptor descriptor = new ServiceDescriptor(type, Activator.CreateInstance);
             //}
-            services.AddScoped<UserService>();
+            services.AddScoped<IdentityService>();
             services.AddScoped<RoleService>();
+            services.AddScoped<SignInService>();
+            services.AddScoped<ApplicationUserService>();
             return services;
         }
     }

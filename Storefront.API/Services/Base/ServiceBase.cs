@@ -3,7 +3,7 @@ using Storefront.API.Data;
 
 namespace Storefront.API.Services.Base
 {
-    public class ServiceBase<TModel, TKey> : IDisposable
+    public abstract class ServiceBase<TModel, TKey> : IDisposable
         where TModel : class
         where TKey : struct, IEquatable<TKey>
     {

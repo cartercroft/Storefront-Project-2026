@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Storefront.API.Classes;
 using Storefront.API.Models;
 using Storefront.API.Services;
@@ -7,33 +8,24 @@ namespace Storefront.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
-        private readonly UserService _userService;
-        public UsersController(UserService userService)
+        private readonly ApplicationUserService _userService;
+        public UsersController(ApplicationUserService userService) 
         {
             _userService = userService;
         }
-        [HttpPost]
-        public async Task<Response<ApplicationUserModel>> Register(RegisterUserModel model)
+        [HttpGet]
+        public async Task<Response<IEnumerable<ApplicationUserModel>>> GetAll()
         {
             try
             {
-                if(!ModelState.IsValid) 
-                {
-                    return new Response<ApplicationUserModel>()
-                    {
-                        ErrorMessages = ModelState.Values.SelectMany(v => v.Errors)
-                        .Select(e => e.ErrorMessage)
-                        .ToList()
-                    };
-                }
-
-                return await _userService.Register(model);
+                return await _userService.GetAll();
             }
             catch (Exception ex)
             {
-                return new Response<ApplicationUserModel> { ErrorMessages = { "An unknown error has occurred." } };
+                return new Response<IEnumerable<ApplicationUserModel>> { ErrorMessages = { "An unknown error has occurred." } };
             }
         }
     }

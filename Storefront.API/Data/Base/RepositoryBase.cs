@@ -16,6 +16,10 @@ namespace Storefront.API.Data.Base
             _context = dbContext;
             _dbSet = _context.Set<TModel>();
         }
+        public async Task<IEnumerable<TModel>> GetAll()
+        {
+            return await _dbSet.ToListAsync();
+        }
         public async Task<IEnumerable<TModel>> Get(
             Expression<Func<TModel, bool>> filter = null!,
             Func<IQueryable<TModel>, IOrderedQueryable<TModel>> orderBy = null!,

@@ -1,4 +1,5 @@
-﻿using Storefront.API.Data.Repositories;
+﻿using Storefront.API.Data.Base;
+using Storefront.API.Data.Repositories;
 
 namespace Storefront.API.Data
 {
@@ -39,7 +40,6 @@ namespace Storefront.API.Data
                 return _roleRepository;
             }
         }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
