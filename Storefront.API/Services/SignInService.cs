@@ -23,7 +23,7 @@ namespace Storefront.API.Services
 
             if (user == null)
             {
-                response.ErrorMessages.Add($"Unable to find user by email ${model.Email}.");
+                response.ErrorMessages.Add($"Unable to find user by email {model.Email}.");
                 Logger.Log(LogLevel.Information, response.ErrorMessage);
                 return response;
             }
@@ -34,12 +34,17 @@ namespace Storefront.API.Services
                 return response;
             }
 
-
+            throw new Exception("This is a huge error");
             SignInResult result = await base.PasswordSignInAsync(user.UserName, model.Password, true, false);
 
             if (!result.Succeeded)
             {
-                response.ErrorMessages.Add("Error signing in.");
+                response.ErrorMessages.Add("Invalid username or password.");
+                Logger.Log(LogLevel.Information, $"Failed login for user {user.Email}.");
+            }
+            else
+            {
+                Logger.Log(LogLevel.Information, $"Successful login for user {user.Email}.");
             }
 
             return response;

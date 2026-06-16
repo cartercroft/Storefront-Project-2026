@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using Storefront.API.Classes;
 using Storefront.API.Data;
 using Storefront.API.Data.Models;
@@ -15,7 +16,21 @@ if (connectionStrings is null)
     throw new KeyNotFoundException("ConnectionStrings");
 }
 
+string loggingPath = builder.Configuration.GetSection("LoggingPath").Get<string>();
+if (loggingPath is null)
+{
+    throw new KeyNotFoundException("LoggingPath");
+}
 // Add services to the container.
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.File(loggingPath, rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddDbContext<StorefrontContext>(options =>
     options.UseSqlServer(connectionStrings.Storefront));
@@ -58,23 +73,4 @@ app.MapIdentityApi<ApplicationUser>();
 
 app.MapControllers();
 
-
-
 app.Run();
-
-//void SeedRoles(WebApplication? app)
-//{
-//    using (var scope = app.Services.CreateScope())
-//    {
-//        var roleManager = scope.ServiceProvider.GetRequiredService();
-//        string[] roleNames = { "Admin", "User", "Manager" };
-
-//        foreach (var roleName in roleNames)
-//        {
-//            if (!await roleManager.RoleExistsAsync(roleName))
-//            {
-//                await roleManager.CreateAsync(new IdentityRole(roleName));
-//            }
-//        }
-//    }
-//}

@@ -41,24 +41,17 @@ namespace Storefront.API.Controllers
         [HttpPost]
         public async Task<Response> Login(LoginModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
+                return new Response()
                 {
-                    return new Response()
-                    {
-                        ErrorMessages = ModelState.Values.SelectMany(v => v.Errors)
-                        .Select(e => e.ErrorMessage)
-                        .ToList()
-                    };
-                }
+                    ErrorMessages = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList()
+                };
+            }
 
-                return await _signInService.Login(model);
-            }
-            catch (Exception ex)
-            {
-                return new Response<ApplicationUserModel> { ErrorMessages = { "An unknown error has occurred." } };
-            }
+            return await _signInService.Login(model);
         }
         [HttpPost]
         public async Task SignOut()
