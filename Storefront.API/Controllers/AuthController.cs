@@ -54,7 +54,7 @@ namespace Storefront.API.Controllers
             return await _signInService.Login(model);
         }
         [HttpPost]
-        public async Task SignOut()
+        public async Task Logout()
         {
             await _signInService.SignOutAsync();
         }

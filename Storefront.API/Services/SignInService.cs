@@ -34,7 +34,6 @@ namespace Storefront.API.Services
                 return response;
             }
 
-            throw new Exception("This is a huge error");
             SignInResult result = await base.PasswordSignInAsync(user.UserName, model.Password, true, false);
 
             if (!result.Succeeded)

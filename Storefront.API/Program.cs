@@ -16,8 +16,8 @@ if (connectionStrings is null)
     throw new KeyNotFoundException("ConnectionStrings");
 }
 
-string loggingPath = builder.Configuration.GetSection("LoggingPath").Get<string>();
-if (loggingPath is null)
+string? loggingPath = builder.Configuration.GetSection("LoggingPath").Get<string>();
+if (string.IsNullOrEmpty(loggingPath))
 {
     throw new KeyNotFoundException("LoggingPath");
 }
@@ -65,7 +65,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseExceptionHandler();
 
 app.UseAuthentication();
 app.UseAuthorization();

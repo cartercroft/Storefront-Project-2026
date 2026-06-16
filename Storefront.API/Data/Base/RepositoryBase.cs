@@ -4,14 +4,15 @@ using System.Linq.Expressions;
 
 namespace Storefront.API.Data.Base
 {
-    public class RepositoryBase<TModel, TKey> : IDisposable
+    public class RepositoryBase<TModel, TKey, TContext> : IDisposable
         where TModel : class 
         where TKey : struct, IEquatable<TKey>
+        where TContext : DbContext
     {
         protected readonly DbSet<TModel> _dbSet;
-        private readonly StorefrontContext _context;
+        private readonly TContext _context;
         private bool disposed = false;
-        public RepositoryBase(StorefrontContext dbContext)
+        public RepositoryBase(TContext dbContext)
         {
             _context = dbContext;
             _dbSet = _context.Set<TModel>();
