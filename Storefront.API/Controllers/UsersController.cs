@@ -17,7 +17,7 @@ namespace Storefront.API.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public async Task<Response<IEnumerable<ApplicationUserModel>>> GetAll()
+        public async Task<Response<IEnumerable<ApplicationUserViewModel>>> GetAll()
         {
             try
             {
@@ -25,7 +25,7 @@ namespace Storefront.API.Controllers
             }
             catch (Exception ex)
             {
-                return new Response<IEnumerable<ApplicationUserModel>> { ErrorMessages = { "An unknown error has occurred." } };
+                return new Response<IEnumerable<ApplicationUserViewModel>> { ErrorMessages = { "An unknown error has occurred." } };
             }
         }
     }

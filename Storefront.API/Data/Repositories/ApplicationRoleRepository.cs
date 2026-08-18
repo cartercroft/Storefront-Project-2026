@@ -5,6 +5,6 @@ namespace Storefront.API.Data.Repositories
 {
     public class ApplicationRoleRepository : RepositoryBase<ApplicationRole, Guid, StorefrontContext>
     {
-        public ApplicationRoleRepository(StorefrontContext dbContext) : base(dbContext){}
+        public ApplicationRoleRepository(StorefrontContext dbContext, Serilog.ILogger logger) : base(dbContext, logger){}
     }
 }

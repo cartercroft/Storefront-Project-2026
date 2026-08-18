@@ -5,7 +5,7 @@ using Storefront.API.Classes;
 using Storefront.API.Data.Models;
 using Storefront.API.Models;
 
-namespace Storefront.API.Services
+namespace Storefront.API.Services.Identity
 {
     public class SignInService : SignInManager<ApplicationUser>
     {
@@ -14,7 +14,7 @@ namespace Storefront.API.Services
         {
             _userManager = userManager;
         }
-        public async Task<Response> Login(LoginModel model)
+        public async Task<Response> Login(LoginViewModel model)
         {
 
             Response response = new Response();

@@ -19,11 +19,11 @@ namespace Storefront.API.Classes
             logBuilder.AppendLine($"Stack Trace: {exception.StackTrace}");
             _logger.LogError(logBuilder.ToString());
 
-            var (statusCode, title) = exception switch
+            var (statusCode, title, details) = exception switch
             {
-                ArgumentException => (StatusCodes.Status400BadRequest, "Bad Request"),
-                UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
-                _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
+                ArgumentException => (StatusCodes.Status400BadRequest, "Bad Request", "Invalid request format."),
+                UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized", "You are not authorized to access this resource."),
+                _ => (StatusCodes.Status500InternalServerError, "Internal Server Error", "An unknown error occurred.")
             };
 
             // Create standard ProblemDetails to prevent leaking sensitive stack traces
@@ -31,7 +31,7 @@ namespace Storefront.API.Classes
             {
                 Status = statusCode,
                 Title = title,
-                Detail = exception.Message,
+                Detail = details,
                 Instance = httpContext.Request.Path
             };
 

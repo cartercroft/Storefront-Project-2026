@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Storefront.API.Classes;
 using Storefront.API.Models;
-using Storefront.API.Services;
+using Storefront.API.Services.Identity;
 
 namespace Storefront.API.Controllers
 {
@@ -11,35 +12,30 @@ namespace Storefront.API.Controllers
     {
         private readonly IdentityService _identityService;
         private readonly SignInService _signInService;
-        public AuthController(IdentityService identityService, SignInService signInService)
+        private readonly IMapper _mapper;
+        public AuthController(IdentityService identityService, SignInService signInService, IMapper mapper)
         {
             _identityService = identityService;
             _signInService = signInService;
+            _mapper = mapper;
         }
         [HttpPost]
-        public async Task<Response<ApplicationUserModel>> Register(RegisterUserModel model)
+        public async Task<Response<ApplicationUserViewModel>> Register(RegisterUserViewModel model)
         {
-            try
+            if(!ModelState.IsValid) 
             {
-                if(!ModelState.IsValid) 
+                return new Response<ApplicationUserViewModel>()
                 {
-                    return new Response<ApplicationUserModel>()
-                    {
-                        ErrorMessages = ModelState.Values.SelectMany(v => v.Errors)
-                        .Select(e => e.ErrorMessage)
-                        .ToList()
-                    };
-                }
+                    ErrorMessages = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList()
+                };
+            }
 
-                return await _identityService.Register(model);
-            }
-            catch (Exception ex)
-            {
-                return new Response<ApplicationUserModel> { ErrorMessages = { "An unknown error has occurred." } };
-            }
+            return await _identityService.Register(model);
         }
         [HttpPost]
-        public async Task<Response> Login(LoginModel model)
+        public async Task<Response> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
