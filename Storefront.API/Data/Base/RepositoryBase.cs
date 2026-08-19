@@ -74,7 +74,7 @@ namespace Storefront.API.Data.Base
 
             if(entityToDelete is null)
             {
-                throw new ArgumentOutOfRangeException($"Unable to find entity of type {typeof(TModel)} with ID {id}.");
+                throw new ArgumentOutOfRangeException($"Unable to find entity of type {nameof(TModel)} with ID {id}.");
             }
                 
             Delete(entityToDelete);
