@@ -1,10 +1,10 @@
-﻿using Storefront.API.Data.Base;
-using Storefront.API.Data.Models;
+﻿using Storefront.API.Data.Models;
+using CroftMicroservices.Data;
 
 namespace Storefront.API.Data.Repositories
 {
     public class ApplicationRoleRepository : RepositoryBase<ApplicationRole, Guid, StorefrontContext>
     {
-        public ApplicationRoleRepository(StorefrontContext dbContext, Serilog.ILogger logger) : base(dbContext, logger){}
+        public ApplicationRoleRepository(StorefrontContext dbContext, ILogger logger) : base(dbContext, logger){}
     }
 }
