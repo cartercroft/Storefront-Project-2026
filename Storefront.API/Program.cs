@@ -26,9 +26,9 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .WriteTo.File(loggingPath, rollingInterval: RollingInterval.Day)
     .CreateLogger();
+builder.Services.AddSingleton(Log.Logger);
 
 builder.Host.UseSerilog();
-
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
@@ -49,9 +49,10 @@ builder.Services.AddIdentityApiEndpoints<ApplicationUser>(options =>
     .AddEntityFrameworkStores<StorefrontContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddUnitOfWork();
+builder.Services.AddAutoMapper(opt => { 
+    opt.AddProfile<ApplicationMappingProfile>();
+});
 builder.Services.AddAppServices();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

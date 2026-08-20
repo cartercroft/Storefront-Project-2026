@@ -4,7 +4,7 @@ using Storefront.API.Classes;
 using Storefront.API.Data.Models;
 using Storefront.API.Models;
 
-namespace Storefront.API.Services
+namespace Storefront.API.Services.Identity
 {
     public class IdentityService : UserManager<ApplicationUser>
     {
@@ -12,7 +12,7 @@ namespace Storefront.API.Services
         {
         }
 
-        public async Task<Response<ApplicationUserModel>> Register(RegisterUserModel viewModel)
+        public async Task<Response<ApplicationUserViewModel>> Register(RegisterUserViewModel viewModel)
         {
             //TODO: Fix mapping once AutoMapper is implemented.
             ApplicationUser user = new ApplicationUser()
@@ -28,17 +28,17 @@ namespace Storefront.API.Services
 
             if (!createResult.Succeeded)
             {
-                return new Response<ApplicationUserModel>() { ErrorMessages = createResult.Errors.Select(e => $"Error Code: {e.Code} Description: {e.Description}").ToList() };
+                return new Response<ApplicationUserViewModel>() { ErrorMessages = createResult.Errors.Select(e => $"Error Code: {e.Code} Description: {e.Description}").ToList() };
             }
 
-            ApplicationUserModel result = new ApplicationUserModel
+            ApplicationUserViewModel result = new ApplicationUserViewModel
             {
                 FirstName = viewModel.FirstName,
                 LastName = viewModel.LastName,
                 Email = viewModel.Email
             };
 
-            return new Response<ApplicationUserModel>(result);
+            return new Response<ApplicationUserViewModel>(result);
         }
     }
 }
