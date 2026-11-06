@@ -4,6 +4,7 @@ using Storefront.API.Models;
 using Storefront.API.Services;
 using CroftMicroservices.Controllers;
 using Storefront.API.Data;
+using Storefront.Shared.Search;
 
 namespace Storefront.API.Controllers
 {
@@ -18,9 +19,9 @@ namespace Storefront.API.Controllers
         }
 
         [HttpGet]
-        public async Task<Response<IEnumerable<ItemViewModel>>> GetAll()
+        public async Task<Response<IEnumerable<ItemViewModel>>> Search([FromQuery] ItemSearchParameters searchParams)
         {
-            return await _service.GetAll();
+            return await _service.Search(searchParams);
         }
     }
 }

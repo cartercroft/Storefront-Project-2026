@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using Storefront.API.Classes;
 using Storefront.API.Data.Models;
 using Storefront.API.Data.Repositories;
 using Storefront.API.Models;

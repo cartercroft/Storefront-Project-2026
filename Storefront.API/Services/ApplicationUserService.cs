@@ -2,7 +2,6 @@
 using Storefront.API.Data.Models;
 using Storefront.API.Data.Repositories;
 using Storefront.API.Models;
-using CroftMicroservices.Services;
 using Storefront.API.Data;
 
 namespace Storefront.API.Services

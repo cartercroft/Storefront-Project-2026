@@ -27,4 +27,8 @@
     <Folder Include="Models\Response\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Storefront.Shared\Storefront.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

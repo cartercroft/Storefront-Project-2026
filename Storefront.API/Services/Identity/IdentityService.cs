@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using Storefront.API.Classes;
 using Storefront.API.Data.Models;
 using Storefront.API.Models;
 

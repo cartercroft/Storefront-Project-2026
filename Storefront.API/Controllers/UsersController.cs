@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CroftMicroservices.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Storefront.API.Classes;
+using Storefront.API.Data;
+using Storefront.API.Data.Models;
 using Storefront.API.Models;
 using Storefront.API.Services;
 
@@ -9,24 +11,17 @@ namespace Storefront.API.Controllers
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize]
-    public class UsersController : ControllerBase
+    public class UsersController : CrudControllerBase<ApplicationUserViewModel, ApplicationUser, Guid, StorefrontContext>
     {
         private readonly ApplicationUserService _userService;
-        public UsersController(ApplicationUserService userService) 
+        public UsersController(ApplicationUserService userService) : base(userService)
         {
             _userService = userService;
         }
         [HttpGet]
         public async Task<Response<IEnumerable<ApplicationUserViewModel>>> GetAll()
         {
-            try
-            {
-                return await _userService.GetAll();
-            }
-            catch (Exception ex)
-            {
-                return new Response<IEnumerable<ApplicationUserViewModel>> { ErrorMessages = { "An unknown error has occurred." } };
-            }
+            return await _userService.GetAll();
         }
     }
 }

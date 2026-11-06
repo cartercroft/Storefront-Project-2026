@@ -5,7 +5,6 @@ using Storefront.API.Classes;
 using Storefront.API.Data;
 using Storefront.API.Data.Models;
 using Storefront.API.Extensions;
-using Storefront.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +20,7 @@ if (string.IsNullOrEmpty(loggingPath))
 {
     throw new KeyNotFoundException("LoggingPath");
 }
+
 // Add services to the container.
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -29,7 +29,14 @@ Log.Logger = new LoggerConfiguration()
 builder.Services.AddSingleton(Log.Logger);
 
 builder.Host.UseSerilog();
+
+
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+
+
+
 builder.Services.AddProblemDetails();
 
 builder.Services.AddDbContext<StorefrontContext>(options =>

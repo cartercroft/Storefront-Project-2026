@@ -3,7 +3,6 @@ using Storefront.API.Data.Models;
 using Storefront.API.Data.Repositories;
 using Storefront.API.Models;
 using Storefront.API.Data;
-using CroftMicroservices.Services;
 
 namespace Storefront.API.Services
 {

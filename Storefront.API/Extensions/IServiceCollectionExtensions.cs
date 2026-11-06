@@ -1,8 +1,4 @@
-﻿using Storefront.API.Data;
-using Storefront.API.Data.Repositories;
-using Storefront.API.Services;
-using Storefront.API.Services.Identity;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Storefront.API.Extensions
 {
@@ -10,23 +6,49 @@ namespace Storefront.API.Extensions
     {
         public static IServiceCollection AddAppServices(this IServiceCollection services)
         {
-            //TODO: Assembly Scan
-            //var types = Assembly.GetExecutingAssembly().GetTypes()
-            //    .Where(t => t.IsClass && !t.IsAbstract && t.Namespace == "Storefront.API.Services");
+            List<string> namespacesToScan = new List<string>()
+            {
+                "Storefront.API.Services",
+                "Storefront.API.Data.Repositories",
+                "Storefront.API.Services.Identity"
+            };
 
-            //foreach(var type in types)
-            //{
-            //    ServiceDescriptor descriptor = new ServiceDescriptor(type, Activator.CreateInstance);
-            //}
-            services.AddScoped<IdentityService>();
-            services.AddScoped<RoleService>();
-            services.AddScoped<SignInService>();
-            services.AddScoped<ApplicationUserService>();
-            services.AddScoped<ApplicationUserRepository>();
-            services.AddScoped<ApplicationRoleService>();
-            services.AddScoped<ApplicationRoleRepository>();
-            services.AddScoped<ItemService>();
-            services.AddScoped<ItemRepository>();
+            var types = Assembly.GetAssembly(typeof(Program))!.DefinedTypes
+                .Where(t => t.IsClass
+                && !t.IsAbstract
+                && !string.IsNullOrEmpty(t.Namespace)
+                && namespacesToScan.Contains(t.Namespace))
+                .ToList();
+
+            List<Type> includedInterfaces = new List<Type>()
+            {
+                typeof(ILogger)
+            };
+
+            foreach (var type in types) { 
+                IEnumerable<Type> interfacesToAdd = type.ImplementedInterfaces.Intersect(includedInterfaces);
+
+                if (interfacesToAdd.Any())
+                {
+                    foreach (var interf in interfacesToAdd)
+                    {
+                        services.AddScoped(interf, type);
+                    }
+                }
+                else
+                {
+                    services.AddScoped(type);
+                }
+            }
+            //services.AddScoped<IdentityService>();
+            //services.AddScoped<RoleService>();
+            //services.AddScoped<SignInService>();
+            //services.AddScoped<ApplicationUserService>();
+            //services.AddScoped<ApplicationUserRepository>();
+            //services.AddScoped<ApplicationRoleService>();
+            //services.AddScoped<ApplicationRoleRepository>();
+            //services.AddScoped<ItemService>();
+            //services.AddScoped<ItemRepository>();
             return services;
         }
     }
